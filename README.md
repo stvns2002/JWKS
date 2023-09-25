@@ -22,3 +22,11 @@ In the endpoint /auth when your token is invalid:
 token:
 ![jw token](https://github.com/stvns2002/JWKS/assets/113872923/59307358-0d1b-4760-84ce-743d6a3b594e)
 
+verifying token in jwt.io:
+![jwtio](https://github.com/stvns2002/JWKS/assets/113872923/1443590b-c301-4b61-a1dd-9c133b2c48c4)
+
+
+
+
+
+
