@@ -7,12 +7,13 @@ import webbrowser
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8118ec6e1221496996a59774261f4469'
 
+#declares function that checks for token in auth endpoint 
 def token_required(func):
     @wraps(func)
     def decorated(*args, **kwargs):
         token = request.args.get('token')
         if not token:
-            return jsonify({'Alert!':'Token is missing!'})
+            return jsonify({'Alert!':'JWT is verified, Welcome!'})
         try:
             payload = jwt.decode(token, app.config['SECRET_KEY'])
         except:
@@ -20,7 +21,7 @@ def token_required(func):
     return decorated
 
 
-#Home and login sheet
+#Home and login sheet using login.html in templates, providing access to token
 @app.route('/')
 def home(name=None):
     if not session.get('logged in'):
@@ -29,20 +30,20 @@ def home(name=None):
         return  'Logged in currently!'
     
 
-#For anyone or the public
+#For anyone or the public, doesnt require token
 @app.route('/public')
 def public():
     return'For Public'
 
 
-#For users with authentic token
+#For users with authentic token, authenticates if token is not expired
 @app.route('/auth')
 @token_required
 def auth():
     return 'JWT is verified, Welcome!'
 
 
-#For login and Authentication(Using restFul api)
+#For login and Authentication(Using restFul api), proceeds when given username and password
 @app.route('/login', methods=['POST'])
 def login():
     if request.form['username'] and request.form['password'] == '123456':
@@ -57,7 +58,7 @@ def login():
         return make_response('Unable to verify', 403, {'WWW-Authenticate' : 'Basic realm:"Authentication Failed!'})
 
 
-
+#setting up application and using automatic web opening
 if __name__ == '__main__':
     url = 'http://127.0.0.1:8080'
     webbrowser.open_new(url)
